@@ -1,0 +1,281 @@
+/* App.css - Document Summary Assistant (final) */
+:root{
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #9aa4b2;
+  --accent: #6ee7b7;
+  --accent-2: #60a5fa;
+  --glass: rgba(255,255,255,0.04);
+  --error: #ff6b6b;
+  --radius: 12px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Page background + base text */
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: linear-gradient(180deg,#071024 0%, #071933 100%);
+  color: #e6eef6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-feature-settings: "liga" 0;
+}
+
+/* App container: 80% of viewport width, centered, with top padding */
+.ds-app {
+  width: 80vw;               /* 80% of screen width */
+  max-width: 1400px;
+  min-width: 640px;
+  margin: 28px auto;
+  padding: 40px 20px 24px;   /* top padding increased */
+  box-sizing: border-box;
+
+  /* center content horizontally and align items */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Header */
+.ds-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  width: 100%;
+}
+.ds-header h1 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.2px;
+}
+.ds-header .muted, .ds-header p { margin: 0; }
+
+@media (min-width: 880px) {
+  .ds-header { justify-content: space-between; text-align: left; }
+}
+@media (max-width: 879px) {
+  .ds-header { flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+}
+
+.muted { color: var(--muted); }
+.small { font-size: 12px; color: var(--muted); }
+
+.status-badge {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  box-shadow: 0 2px 8px rgba(2,6,23,0.6);
+  color: #cde8d6;
+}
+.status-badge.extracting { background: linear-gradient(90deg,#173b2b,#1f4d3a); }
+.status-badge.summarizing { background: linear-gradient(90deg,#2b3b5a,#23407a); }
+.status-badge.done { background: linear-gradient(90deg,#18343b,#134e48); color: var(--accent); }
+.status-badge.error { background: linear-gradient(90deg,#3b1414,#5a1b1b); color: var(--error); }
+
+/* Main grid: equal halves (50% / 50%) inside the 80vw container */
+.ds-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* equal halves */
+  grid-template-areas: "left right";
+  gap: 18px;
+  align-items: start;
+  width: 100%;                /* full width inside centered container */
+  box-sizing: border-box;
+
+  /* nudge content slightly toward center */
+  padding-left: 3vw;
+  padding-right: 3vw;
+}
+
+/* Card style used across the app */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+  box-sizing: border-box;
+}
+
+/* Upload card specifics */
+.upload-top {
+  display:flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.drop-area {
+  display:flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px dashed rgba(255,255,255,0.03);
+}
+.drop-area .icon { font-size: 32px; }
+.drop-title { font-weight: 600; }
+
+/* Controls */
+.controls {
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+.select-wrap select {
+  background: rgba(255,255,255,0.02);
+  color: inherit;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  outline: none;
+}
+button.primary {
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color: #062028;
+  border: none;
+  padding: 9px 14px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(6,30,40,0.5);
+}
+button.primary[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+/* Extracted preview textarea - increased size and centered within left area */
+.extracted-preview {
+  display: block;
+  width: 100%;
+  padding-left: 2.5rem; /* extra left inset to nudge toward center */
+  padding-right: 0.75rem;
+  box-sizing: border-box;
+}
+.extracted-preview textarea {
+  width: 100%;
+  border-radius: 8px;
+  resize: vertical;
+  padding: 16px;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #e6eef6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+
+  /* Increased editing area */
+  min-height: 420px;           /* larger edit area */
+  max-height: 72vh;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Upload card padding adjustment to nudge left content */
+.upload-card {
+  padding-left: 2.5rem; /* bring upload controls toward center */
+  padding-right: 0.75rem;
+  box-sizing: border-box;
+}
+
+/* Result / Summary card */
+.result-card h3 { margin-top: 0; }
+.summary-block {
+  background: rgba(255,255,255,0.02);
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.summary-text {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #dff7ec;
+  font-size: 15px;
+}
+
+/* Make result card balanced after left nudge */
+.result-card {
+  padding-right: 2.5rem;
+  box-sizing: border-box;
+}
+
+/* Error box */
+.error-box {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(255,107,107,0.08);
+  border: 1px solid rgba(255,107,107,0.12);
+  color: var(--error);
+}
+
+/* Footer */
+.ds-footer { margin-top: 18px; color: var(--muted); text-align: center; }
+
+/* -----------------------------
+   Grid area assignment (no JSX changes)
+   ----------------------------- */
+
+/* Group upload card and extracted preview to the LEFT half */
+.upload-card,
+.extracted-preview {
+  grid-area: left;
+}
+
+/* Put the result (summary) in the RIGHT half */
+.result-card {
+  grid-area: right;
+  /* make right panel visually like a dedicated column */
+  position: sticky;
+  top: 20px;
+  height: calc(100vh - 120px);
+  overflow: auto;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+}
+
+/* If you have multiple left items, ensure they stack nicely */
+.upload-card {
+  margin-bottom: 12px;
+}
+.extracted-preview {
+  margin-top: 0;
+}
+
+/* Small responsive */
+@media (max-width: 880px) {
+  /* make container a bit wider on small screens and stack columns */
+  .ds-app { width: 95vw; min-width: auto; padding: 20px 12px; }
+  .ds-main {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "left"
+      "right";
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  /* remove sticky behavior on mobile */
+  .result-card {
+    position: relative;
+    height: auto;
+    max-height: none;
+  }
+
+  .ds-header { flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+
+  /* reduce padding on left items for mobile */
+  .upload-card, .extracted-preview {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
