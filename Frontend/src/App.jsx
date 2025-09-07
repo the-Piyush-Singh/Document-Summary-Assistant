@@ -11,7 +11,7 @@ GlobalWorkerOptions.workerSrc =
 export default function App() {
   const [file, setFile] = useState(null);
   const [extractedText, setExtractedText] = useState("");
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState(null); 
   const [status, setStatus] = useState("idle"); // idle | extracting | summarizing | done | error
   const [ocrProgress, setOcrProgress] = useState(0);
   const [length, setLength] = useState("short");
@@ -130,11 +130,26 @@ export default function App() {
       setExtractedText(text);
 
       setStatus("summarizing");
-     const endpoint = "http://localhost:3000/ai/get-review";
+//      const endpoint = "http://localhost:3000/ai/get-review";
+
+// const resp = await axios.post(
+//   endpoint,
+//   { text: text, length: length }, // ✅ make sure both keys are explicit
+//   {
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     timeout: 120000,
+//   }
+// );
+
+
+
+      const endpoint = "/ai/get-review";
 
 const resp = await axios.post(
   endpoint,
-  { text: text, length: length }, // ✅ make sure both keys are explicit
+  { text, length },
   {
     headers: {
       "Content-Type": "application/json",
@@ -142,6 +157,7 @@ const resp = await axios.post(
     timeout: 120000,
   }
 );
+
 
       
      // const resp = await axios.post(endpoint, payload, { timeout: 120000 });
